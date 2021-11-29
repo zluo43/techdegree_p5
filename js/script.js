@@ -4,6 +4,8 @@ const search_container=document.getElementsByClassName("search-container");
 const modal_div=document.getElementsByClassName('modal-container');
 
 
+const i=document.getElementsByClassName('card number0')
+
 //fetch request
 async function fetchData(url) {
     try {
@@ -32,6 +34,9 @@ async function getPeopleProfile(url) {
 //create HTML trial 
 let counter=0;
 async function generateHTML(data){
+    // console.log(data[0])
+    // console.log(data[1])
+
     const data1 =data.map(item=> {
         const html=`<div class="card number${counter}">
         <div class="card-img-container">
@@ -45,11 +50,12 @@ async function generateHTML(data){
     </div>`
         counter=counter+1;
         return html}
+
     
     )
 
-
-   gallery_div.insertAdjacentHTML("beforeend",data1);
+   //console.log(data1.join(''))
+   gallery_div.insertAdjacentHTML("beforeend",data1.join('')); //use .join() to get rid of the comma 
    //console.log(data1);
    return data
 
@@ -121,15 +127,61 @@ async function generateHTML(data){
 
 //Eventlistener 
 
+
+
+// getPeopleProfile('https://randomuser.me/api/?results=12')
+//      .then(data=>generateHTML(data))
+//      .then((data)=>{
+//         console.log(data)
+//         //data_str=data.join('')
+        
+//         gallery_div.addEventListener('click',(event)=>{
+//             const html=data.map(item=>{
+//                 //console.log(item.name.first+' '+item.name.last);
+//                 // console.log(event.target.textContent);
+//             if (event.target.tagName==='H3'){
+//                 if (item.name.first+' '+item.name.last===event.target.textContent){
+//                     const html_markup=`<div class="modal-container">
+//     <div class="modal">
+//         <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+//         <div class="modal-info-container">
+//             <img class="modal-img" src=${item.picture.large} alt="profile picture">
+//             <h3 id="name" class="modal-name cap">${item.name.first} ${item.name.last}</h3>
+//             <p class="modal-text">${item.email}</p>
+//             <p class="modal-text cap">${item.location.city}</p>
+//             <hr>
+//             <p class="modal-text">${item.cell}</p>
+//             <p class="modal-text">${item.location.street.name}</p>
+//             <p class="modal-text">Birthday: ${item.dob.date}</p>
+//         </div>
+//     </div>`;
+//     gallery_div.insertAdjacentHTML('beforeend',html_markup)};
+   
+// }}
+// );  const close_bttn=document.getElementById('modal-close-btn');
+//     close_bttn.addEventListener('click',()=>{
+//         gallery_div.nextElementSibling.remove();
+
+//     })
+
+
+// })});
+ 
+     
+
+//i[0].children[1].querySelector('h3').textContent
 getPeopleProfile('https://randomuser.me/api/?results=12')
      .then(data=>generateHTML(data))
      .then((data)=>{
+
+        
         gallery_div.addEventListener('click',(event)=>{
             const html=data.map(item=>{
                 //console.log(item.name.first+' '+item.name.last);
                 // console.log(event.target.textContent);
-            if (event.target.tagName==='H3'){
-                if (item.name.first+' '+item.name.last===event.target.textContent){
+            let div=event.currentTarget
+            // console.log(div)
+                if (item.name.first+' '+item.name.last===div.children[1].querySelector('h3').textContent){
                     const html_markup=`<div class="modal-container">
     <div class="modal">
         <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
@@ -144,22 +196,26 @@ getPeopleProfile('https://randomuser.me/api/?results=12')
             <p class="modal-text">Birthday: ${item.dob.date}</p>
         </div>
     </div>`;
-    gallery_div.insertAdjacentHTML('afterend',html_markup)};
+    gallery_div.insertAdjacentHTML('beforeend',html_markup)};
    
-}}
-);  const close_bttn=document.getElementById('modal-close-btn');
+    });  
+    const close_bttn=document.getElementById('modal-close-btn');
     close_bttn.addEventListener('click',()=>{
-        gallery_div.nextElementSibling.remove();
+        const mod=gallery_div.querySelector('.modal-container');
+        const lastchild=gallery_div.lastChild;
+        console.log(mod)
+        //gallery_div.querySelector('.modal-container').remove();
+        gallery_div.removeChild(mod)
+        lastchild.remove()
+         
 
-    })
+})   
+
 
 
 })});
- 
-     
 
 
-//extra credit 
 
 
 
